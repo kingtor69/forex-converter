@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block tab_title %}Flask Boggle{% endblock %}
+<!-- {% block staticroute %}./{% endblock %} -->
+{% block header %}Oh, it's on!{% endblock %}
+{% block content %}
+<div class="container fluid">
+    <section id="boggle">
+        <div class="row justify-content-around">
+            <div class="col-12 col-md-8 col-lg-6">
+                <table class="boggle-board">
+                    <thead class="text-center">
+                        <tr>
+                            <th colspan="5" class="boggle-board text-center">Game #{{ session['game_num']}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in range(board_size) %}
+                        <tr>
+                            {% for col in range(5) %}
+                            <td class="col text-center boggle-board" id="{{row}}-{{col}}">{{ board[row][col] }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <table>
+                    <thead>
+                        <th class="h3 border-rounded border-primary">words &nbsp; &nbsp;</th>
+                        <th class="h3 border-rounded border-primary">score</th>
+                    </thead>
+                    <tbody class="scoring">
+                        <!-- JS/jQuery will populate this score -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="row">
+                    <div class="col">
+                        <h3>
+                            Seconds left in this game: <b class="timer text-danger">
+                            <!-- JS puts remaining seconds in here -->
+                            </b>
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form action="#" class="word-submit-form" method="POST">
+                            <label for="new-word">enter a word: </label>
+                            <input type="text" id="new-word" name="word" class="word-input border-rounded" autofocus>
+                            <button type="submit" class="bg-secondary text-light">submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="text-center game-score">SCORE: </h3>
+                        <h3 class="text-center running-score text-success">
+                            <!-- JS will display end of game score etc here -->
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p id="messages">
+                            <!-- JS messages will appear here -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block scripts_after %}
+    <script>
+        let game = new GameOBoggle("boggle", 60, 5);
+    </script>
+{% endblock %}}

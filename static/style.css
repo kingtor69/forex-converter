@@ -1,0 +1,79 @@
+body {
+	background-color: black;
+	color: white;
+}
+
+tag,
+.tags {
+	font-size: 1.5rem;
+	border-radius: 6px;
+	/*  padding: 0.4rem;
+  margin: 0.6rem;*/
+}
+
+.troubleshooting {
+	border: 8px solid yellow;
+	background-color: red;
+	color: blue;
+}
+
+.error {
+	border: 4px solid red;
+	background-color: yellow;
+	color: black;
+}
+
+.info {
+	border: 4px solid #008000;
+	background-color: #00ff00;
+	color: black;
+}
+
+.hooray {
+	border: 8px solid navy;
+	background-color: blue;
+	color: yellow;
+	font-size: 2rem;
+	margin: 20px;
+	padding: 20px;
+}
+
+table.boggle-board {
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	padding: 0.5rem;
+}
+
+th.boggle-board {
+	font-size: 4rem;
+	text-decoration: underline;
+	background-color: #07f;
+	color: white;
+	width: 500px;
+	height: 80px;
+	border: 0.1rem black solid;
+	border-radius: 1vw;
+	padding: 0.2rem;
+}
+
+td.boggle-board {
+	font-size: 4rem;
+	background-color: whitesmoke;
+	color: black;
+	font-weight: bolder;
+	width: 100px;
+	height: 80px;
+	border: 0.2rem black solid;
+	border-radius: 1vw;
+	padding: 0.2rem;
+}
+
+input .word-input {
+	font-size: 2rem;
+	height: 3rem;
+	border: 1px black solid;
+	border-radius: 6px;
+}
+
+.submit-butt {
+	border-radius: 4px;
+}
