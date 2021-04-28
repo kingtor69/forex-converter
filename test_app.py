@@ -31,6 +31,13 @@ class ForexAllIsWellTests(TestCase):
                     
                   </td>""", html)
             
+    def test_for_reset_after_converstion(self):
+        """tests if reset button is offered after a successful conversaion"""
+        with app.test_client() as client:
+            res = client.post('/submit', data = {'from': 'USD', 'to': 'USD', 'amt': '1'}, follow_redirects=True)
+            html = res.get_data(as_text=True)
+            self.assertIn('<button class="btn-block btn-secondary rounded">Search Another Conversion</button>', html)
+
     def test_redirect_from_submit(self):
         """tests for redirection happening after form submission"""
         with app.test_client() as client:
@@ -48,10 +55,10 @@ class ForexAllIsWellTests(TestCase):
 
 class ForexErrorTests(TestCase):
 
-    def test_bad_currency_codes():
+    def test_bad_currency_codes(self):
         """test for all three fields being wrong"""
         with app.test_client() as client:
-            res = client.post('/submit', data = {'from': 'apples', 'to': 'oranges', 'amt': '1'}, follow_redirects=True)
+            res = client.post('/submit', data = {'from': 'apples', 'to': 'oranges', 'amt': 'many'}, follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<thead class="card-title border-bottom text-dark bg-warning">
@@ -84,15 +91,3 @@ class ForexErrorTests(TestCase):
             
             </thead>""", html)
 
-# class ForexSessionTests(TestCase):
-#     @classmethod
-#     def setUp(self):
-#         self.client = app.test_client()
-#         with self.client.session_transaction() as sess:
-#             sess[''] = ''
-    
-#     def test_(self):
-#         res = self.client.get('')
-#         html = res.get_data(as_text=True)
-#         self.assertEqual(res.status_code, 200)
-#         self.assertIn('', html)
