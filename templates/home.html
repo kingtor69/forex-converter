@@ -15,7 +15,15 @@
             {% for msg_type in session['msgs'] %}
               {% for msg in session['msgs'][msg_type] %}
                 <tr>
-                  <td colspan="2" class="rounded border border-dark msgs {{ msg_type }}">{{ msg }}</td>
+                  
+                  <td colspan="2" class="rounded border border-dark msgs {{ msg_type }} text-{{ text_color }}">
+                    {{ msg }}
+                    {% if msg_type == "success" %}
+                      <h2>
+                        {{ session['to_symbol'] }} {{ session['converted'] }}
+                      </h2>
+                    {% endif %}
+                  </td>
                 </tr>
               {% endfor %}
             {% endfor %}

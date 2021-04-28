@@ -11,27 +11,40 @@ debug = "DebugToolbarExtension(app)"
 @app.route('/')
 def build_home_page():
     """build home page HTML from templates"""
+
+    # prepare message variables 
+    # TODO: there's a more elegant way to do this
     msg_color = "secondary"
     btn_color = "primary"
-    if session.get('msgs_are'):
-        btn_off = "deactivate"
-        btn_color = "muted"
     msgs = session.get('msgs', {})
-    ## there's a better way to do this, such that there can be messages of different colors
-    for key in msgs.keys(): 
-        if key == 'info': 
-            msg_color = "info" 
-        if key == 'errors': 
-            msg_color = "warning"
-        
-    return render_template('home.html', msg_color = msg_color, btn_off = "deactivate", btn_color = btn_color)
+    text_color = "light"
+    # if we got a conversion, make that into a nice, human-readable message: 
+    if session.get('converted'):
+        session['msgs_are'] = True
+        converted = session['converted']
+        amt = session['amt']
+        from_symbol = session.get('from_symbol')
+        to_symbol = session.get('to_symbol')
+        msg_color = "success"
+        session['msgs'] = {msg_color: [f'{from_symbol} {amt} converted is ']}
+    elif session.get('msgs_are'):
+        msg_color = "warning"
+        text_color = "dark"
+    else:
+        msg_color = "danger"
+        text_color = "dark"
+        session['messages'] = {'danger': "The home page logic failed. If you're not Tor Kingdon, call him"}    
+
+
+
+    return render_template('home.html', msg_color = msg_color, text_color = text_color, btn_off = "deactivate", btn_color = btn_color)
 
 @app.route('/submit', methods = ['POST'])
 def handle_form_submission():
     """retrieve data from form and check for errors"""
     # get list of valid currency codes from Forex
     codes = CurrencyCodes()
-    
+
     # gather to and from codes user entered and convert to upper case
     from_code = request.form['from'].upper()
     to_code = request.form['to'].upper()
@@ -39,7 +52,6 @@ def handle_form_submission():
     # gather raw amount from form (this will be a string)
     raw_amt = request.form['amt']
     
-
     # check for proper formatting and prepare error messages and append to error message list
     error_msgs = []
     if not codes.get_currency_name(from_code):
@@ -59,7 +71,7 @@ def handle_form_submission():
             error_msgs.append(f"Amount ({raw_amt}) can not be zero.")
     # if that didn't work, it is not a number
     except:
-        session['amt'] = ''
+        amt = ''
         error_msgs.append(f"Amount ({raw_amt}) must be a number.")
         
     # save entries to session data
@@ -81,19 +93,25 @@ def handle_form_submission():
 
 @app.route('/convert')
 def convert_currency():
-    # try:
     codes = CurrencyCodes()
     rates = CurrencyRates()
     frm = session['from']
     to = session['to']
-    session['converted'] = round(rates.get_rates(frm, to), 2)
-    # except:
-    #     # should work, but for troubleshooting purposes:
-    #     flash("We got an error from Forex. If anyone who isn't named Tor Kingdon is reading this, please tell him he should fix it.", "bg-danger text-dark")
-
+    amt = float(session['amt'])
+    session['amt'] = f'{amt:.2f}'
+    try: 
+        session['from_symbol'] = codes.get_symbol(frm)
+        session['to_symbol'] = codes.get_symbol(to)
+        rate = rates.get_rate(frm, to)
+        # TODO: if you really have a lot of spare time, look into making currency displayed as it would be locally (i.e. Europe would say 1.234.567,89€ instead of €1,234,567.89 or €1234567.89 as it will now)
+        session['converted'] = f'{round(amt * rate, 2):.2f}'
+    except:
+        # in place of better error handling:
+        flash("We got an error from Forex. If anyone who isn't named Tor Kingdon is reading this, please tell him he should fix it.", "bg-danger text-dark")
+    
     return redirect('/')
 
 @app.route('/reset')
 def reset_session_data():
     session.clear()
-    # return redirect('/')
+    return redirect('/')
