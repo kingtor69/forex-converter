@@ -66,7 +66,8 @@ Answer the following questions below:
 
 - How do you collect data from the body of the request using Flask?
 
-  * 
+  * request.form['<variable>'] retrieves data from a POSTed form
+  * request.json['<variable>'] retrieves data from a POSTed JSON string
 
 - What is a cookie and what kinds of things are they commonly used for?
 

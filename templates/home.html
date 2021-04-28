@@ -3,5 +3,47 @@
 <!-- {% block staticroute %}./{% endblock %} -->
 {% block header %}Forex Currency Converter{% endblock %}
 {% block content %}
-
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-1 col-md-2 col-lg-3"></div>
+    <div class="col-10 col-md-8 col-lg-6">
+      <div class="card bg-dark">
+        <img src="static/images/jason-leung-SAYzxuS1O3M-unsplash.jpg" alt="" class="card-img-top" id="money-img">
+        <table class="table table-borderless bg-dark text-light border-{{ color }} rounded">
+          {% if session['msgs_are'] %}
+            <thead class="card-title border-bottom text-dark bg-{{ msg_color }}">
+            {% for msg_type in session['msgs'] %}
+              {% for msg in session['msgs'][msg_type] %}
+                <tr>
+                  <td colspan="2" class="rounded border border-dark msgs {{ msg_type }}">{{ msg }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </thead>
+          {% endif %}
+          <tbody class="card-body">
+            <form action="/submit" method="POST" id="converter-form">
+              <tr>
+              <td><label for="from">Converting from</label></td>
+              <td><input type="text" id="from" name="from" placeholder="USD e.g." required="required" aria-required="true" value="{{ session.get('from', '') }}"></td>
+              </tr>
+              <tr>
+              <td><label for="to">Converting to</label></td>
+              <td><input type="text" id="to" name="to" placeholder="GBP e.g." required="required" aria-required="true" value="{{ session.get('to', '') }}"></td>
+              </tr>
+              <tr>
+              <td><label for="amt">Amount:</label></td>
+              <td><input type="text" id="amt" name="amt" placeholder="1" required="required" aria-required="true" value="{{ session.get('amt', '') }}"></td>
+              </tr>
+              <tr>
+              <td colspan="2"><button type="submit" class="btn   btn-block btn-{{ btn_color }} rounded" {{btn_off}}>Convert</button></td>
+              </tr>
+            </form>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-3"></div>
+  </div>
+</div>
 {% endblock %}
