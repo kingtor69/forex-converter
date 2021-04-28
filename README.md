@@ -5,4 +5,6 @@
 
 The file `conceptual.md` has my answers to the "conceptual" portion of the assignment.
 
-As of this writing, the Forex currency converter is in progress.
+The flask converter works, with notes as to possible future improvements.
+
+Testing is also working in the file test_app.py
