@@ -29,8 +29,8 @@
             {% endfor %}
             </thead>
           {% endif %}
-          <tbody class="card-body">
-            <form action="/submit" method="POST" id="converter-form">
+          <tbody class="card-body d-{{ form_display }}">
+            <form action="/submit" method="POST" id="converter-form"">
               <tr>
               <td><label for="from">Converting from</label></td>
               <td><input type="text" id="from" name="from" placeholder="USD e.g." required="required" aria-required="true" value="{{ session.get('from', '') }}"></td>
@@ -49,6 +49,13 @@
             </form>
           </tbody>
         </table>
+        {% if form_display == "none" %}
+          <div class="card-body">
+            <form action="/reset">
+              <button class="btn-block btn-secondary rounded">Search Another Conversion</button>
+            </form>
+          </div>
+        {% endif %}
       </div>
     </div>
     <div class="col-1 col-md-2 col-lg-3"></div>

@@ -18,6 +18,7 @@ def build_home_page():
     btn_color = "primary"
     msgs = session.get('msgs', {})
     text_color = "light"
+    form_display = ""
     # if we got a conversion, make that into a nice, human-readable message: 
     if session.get('converted'):
         session['msgs_are'] = True
@@ -27,6 +28,7 @@ def build_home_page():
         to_symbol = session.get('to_symbol')
         msg_color = "success"
         session['msgs'] = {msg_color: [f'{from_symbol} {amt} converted is ']}
+        form_display = "none"
     elif session.get('msgs_are'):
         msg_color = "warning"
         text_color = "dark"
@@ -37,7 +39,7 @@ def build_home_page():
 
 
 
-    return render_template('home.html', msg_color = msg_color, text_color = text_color, btn_off = "deactivate", btn_color = btn_color)
+    return render_template('home.html', msg_color = msg_color, text_color = text_color, form_display = form_display, btn_color = btn_color)
 
 @app.route('/submit', methods = ['POST'])
 def handle_form_submission():
